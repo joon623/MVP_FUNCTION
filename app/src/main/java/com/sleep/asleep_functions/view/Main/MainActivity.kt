@@ -16,18 +16,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainPresenter.createView(this)
-        setClickListener()
+
     }
 
     override fun initPresenter() {
         mainPresenter = MainPresenter()
     }
 
-    override fun setClickListener() {
-        binding.tvMainHead.setOnClickListener {
-            binding.tvMainHead.text = "good"
-        }
-    }
+
 
     override fun onDestroy() {
         mainPresenter.destroyView()

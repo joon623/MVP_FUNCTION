@@ -9,6 +9,7 @@ interface SleepMeasurementContract {
     }
 
     interface Presenter: BasePresenter<View> {
-
+        fun handleRecord()
+        fun sendRecord()
     }
 }

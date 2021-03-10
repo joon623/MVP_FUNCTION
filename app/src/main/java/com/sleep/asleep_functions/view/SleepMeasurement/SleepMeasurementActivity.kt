@@ -4,13 +4,10 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.media.*
-import android.os.Build
 import android.os.Bundle
+import android.os.storage.StorageManager
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.sleep.asleep_functions.base.BaseActivity
 import com.sleep.asleep_functions.databinding.ActivitySleepMeasurementBinding
@@ -18,13 +15,9 @@ import com.sleep.asleep_functions.view.SleepMeasurement.Presenter.SleepMeasureme
 import com.sleep.asleep_functions.view.SleepMeasurement.Presenter.SleepMeasurementPresenter
 import java.io.File
 import java.io.IOException
-import java.lang.System.getProperty
-import java.security.Security.getProperty
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
 class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(ActivitySleepMeasurementBinding::inflate), SleepMeasurementContract.View {
 
@@ -40,15 +33,9 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
     private var audioFile: File? = null
     private var recorder: MediaRecorder? = null
 
-
-    // Requesting permission to RECORD_AUDIO
-    private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sleepMeasurementPresenter.createView(this)
-
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
 
         binding.btnSleepmeasureSleepstart.setOnClickListener {
             startRecord()
@@ -60,6 +47,8 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
 
         binding.btnSleepmeasureLongClick.setOnLongClickListener {
             Toast.makeText(this@SleepMeasurementActivity, "롱클릭 성공", Toast.LENGTH_SHORT).show()
+
+            delete(this)
             true
         }
     }
@@ -86,6 +75,8 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
         binding.btnSleepmeasureSleepstart.isEnabled = false
         binding.btnSleepmeasureSleepstop.isEnabled = true
 
+
+
         try {
             val currentDateTime = Calendar.getInstance().time
             val dateFormat: String = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA).format(currentDateTime) + ".wav"
@@ -95,11 +86,12 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
             Log.e(SleepMeasurementActivity::class.simpleName, e.message ?: e.toString())
             return
         }
+
         //Creating MediaRecorder and specifying audio source, output format, encoder & output format
         recorder = MediaRecorder()
         recorder?.apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             setOutputFile(audioFile?.absolutePath)
             setAudioSamplingRate(48000)
@@ -122,6 +114,7 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
             release()
         }
         stopDrawing()
+
     }
 
     private fun startDrawing() {
@@ -147,6 +140,10 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
             }
         }
         return true
+    }
+
+    private fun delete(context: Context) {
+        context.cacheDir.deleteRecursively()
     }
 
 }

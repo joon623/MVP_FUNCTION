@@ -18,6 +18,17 @@
         android:textColor="@color/black"
         android:text="수면을 측정하세요!" />
 
+    <Button
+        android:id="@+id/btn_sleepmeasure_longClick"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:backgroundTint="@color/teal_200"
+        android:text="잠시 멈추기"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sleepmeasure_head"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+     />
+
 
     <com.visualizer.amplitude.AudioRecordView
         android:id="@+id/audioRecordView"

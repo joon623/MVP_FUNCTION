@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sleep.asleep_functions">
 
+    <permission
+        android:name="android.permission.RECORD_AUDIO"
+        android:protectionLevel="dangerous" />
+    <permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:protectionLevel="dangerous" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,14 +22,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Asleep_functions">
         <activity android:name=".view.MainActivityTwo">
+
+        </activity>
+        <activity android:name=".view.SleepMeasurement.SleepMeasurementActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".view.SleepMeasurement.SleepMeasurementActivity">
-
         </activity>
         <activity android:name=".view.Main.MainActivity"></activity>
     </application>

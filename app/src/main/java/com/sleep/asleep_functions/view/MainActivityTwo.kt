@@ -18,9 +18,9 @@ import java.util.*
 open class MainActivityTwo : AppCompatActivity() {
 
     private val requiredPermissions = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.RECORD_AUDIO
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO
     )
 
     private var timer: Timer? = null
@@ -51,7 +51,7 @@ open class MainActivityTwo : AppCompatActivity() {
         try {
             audioFile = File.createTempFile("audio", "tmp", cacheDir)
         } catch (e: IOException) {
-            Log.e(MainActivityTwo::class.simpleName, e.message ?: e.toString())
+//            Log.e(MainActivityTwo::class.simpleName, e.message ?: e.toString())
             return
         }
         //Creating MediaRecorder and specifying audio source, output format, encoder & output format
@@ -130,9 +130,9 @@ open class MainActivityTwo : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String?>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         for (result in grantResults) {

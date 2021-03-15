@@ -21,12 +21,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Asleep_functions">
+        <activity android:name=".view.AudioRecorderSample.SoundChartActivity">
+
+        </activity>
+        <activity android:name=".view.CustomWave.AudioTestActivity" />
+        <activity android:name=".view.AudioRecorderSample.AudioRecorderActivity" />
         <activity android:name=".view.CustomWave.CustomWaveActivity">
 
         </activity>
-        <activity android:name=".view.Wave.WaveActivity">
-
-        </activity>
+        <activity android:name=".view.Wave.WaveActivity" />
         <activity android:name=".view.MainActivityTwo" />
         <activity android:name=".view.SleepMeasurement.SleepMeasurementActivity">
             <intent-filter>

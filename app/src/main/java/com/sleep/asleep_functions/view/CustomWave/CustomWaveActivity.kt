@@ -1,14 +1,23 @@
 package com.sleep.asleep_functions.view.CustomWave
 
+import android.media.AudioRecord
+import android.media.AudioTrack
+import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.github.squti.androidwaverecorder.WaveConfig
 import com.github.squti.androidwaverecorder.WaveRecorder
 import com.sleep.asleep_functions.R
 import com.sleep.asleep_functions.databinding.ActivityCustomWaveBinding
 import com.sleep.asleep_functions.view.SleepMeasurement.SleepMeasurementActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,6 +45,7 @@ class CustomWaveActivity : AppCompatActivity() {
     }
 
     private fun startRecord() {
+        Log.d("TAG", "start")
 
         binding.btnSleepmeasureSleepstart.isEnabled = false
         binding.btnSleepmeasureSleepstop.isEnabled = true
@@ -53,11 +63,14 @@ class CustomWaveActivity : AppCompatActivity() {
         recorder = WaveRecorder(audioFile)
 
         recorder.startRecording()
+
         recorder.onAmplitudeListener = {
-            Log.i("TAG", "Amplitude : $it")
-//            recorder.calculateAmplitudeMax()
+            GlobalScope.launch(Dispatchers.Default) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    startDrawing(it)
+                }
+            }
         }
-//        startDrawing()
 
     }
 
@@ -66,23 +79,45 @@ class CustomWaveActivity : AppCompatActivity() {
         binding.btnSleepmeasureSleepstop.isEnabled = false
         recorder?.apply {
             stopRecording()
-//            release()
         }
         stopDrawing()
     }
 
-    private fun startDrawing(amplitude: Int) {
+    private suspend fun startDrawing(amp: Int) {
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-//                val currentMaxAmplitude = recorder?.maxAmplitude
-                binding.audioRecordView.update(amplitude ?: 0) //redraw view
+//                val currentMaxAmpli9tude = recorder?.maxAmplitude
+//                val currentMaxAmplitude = recorder?.onAmplitudeListener
+//                val currentMaxAmplitude = calculateAmplitudeMax(data)
+                Log.d("TAG1", "1111111111          $amp")
+                binding.audioRecordView.update(((amp ?: 0) as Int)) //redraw view
             }
-        }, 0, 100)
+        }, 0, 10000000)
     }
 
     private fun stopDrawing() {
         timer?.cancel()
         binding.audioRecordView.recreate()
+    }
+
+
+    // test
+
+    var waveConfig: WaveConfig = WaveConfig()
+
+    val bufferSize = AudioRecord.getMinBufferSize(
+        waveConfig.sampleRate,
+        waveConfig.channels,
+        waveConfig.audioEncoding
+    )
+    val data = ByteArray(bufferSize)
+
+
+    private fun calculateAmplitudeMax(data: ByteArray): Int {
+        val shortData = ShortArray(data.size / 2)
+        ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer()
+            .get(shortData)
+        return shortData.max()?.toInt() ?: 0
     }
 }

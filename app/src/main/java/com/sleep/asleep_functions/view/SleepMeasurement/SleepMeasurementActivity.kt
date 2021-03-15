@@ -79,7 +79,7 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
 
         try {
             val currentDateTime = Calendar.getInstance().time
-            val dateFormat: String = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA).format(currentDateTime) + ".wav"
+            val dateFormat: String = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA).format(currentDateTime) + ".mp4"
             audioFile = File(cacheDir, dateFormat)
 
         } catch (e: IOException) {
@@ -91,11 +91,11 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
         recorder = MediaRecorder()
         recorder?.apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             setOutputFile(audioFile?.absolutePath)
-            setAudioSamplingRate(48000)
-            setAudioEncodingBitRate(48000)
+            setAudioSamplingRate(16000)
+            setAudioEncodingBitRate(16000)
             prepare()
             start()
         }

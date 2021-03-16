@@ -92,7 +92,8 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
         recorder?.apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC)
+            setAudioChannels(1)
             setOutputFile(audioFile?.absolutePath)
             setAudioSamplingRate(16000)
             setAudioEncodingBitRate(16000)

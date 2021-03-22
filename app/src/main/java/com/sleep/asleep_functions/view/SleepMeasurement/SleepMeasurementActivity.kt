@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.media.*
 import android.os.Bundle
+import android.os.Handler
 import android.os.storage.StorageManager
 import android.util.Log
 import android.widget.Toast
@@ -29,6 +30,7 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
             Manifest.permission.RECORD_AUDIO
     )
 
+
     private var timer: Timer? = null
     private var audioFile: File? = null
     private var recorder: MediaRecorder? = null
@@ -39,6 +41,11 @@ class SleepMeasurementActivity : BaseActivity<ActivitySleepMeasurementBinding>(A
 
         binding.btnSleepmeasureSleepstart.setOnClickListener {
             startRecord()
+
+            // 10분 10초 짜리 파일 만들기 위해서 사용
+            Handler().postDelayed({
+                stopRecord()
+            }, 610000)
         }
 
         binding.btnSleepmeasureSleepstop.setOnClickListener {
